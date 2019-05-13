@@ -1,10 +1,10 @@
 import React, {useState} from 'react'
 
 const todo = (props) => {
-	const inputState=useState('')
+	const [todoName,setTodoName]=useState('')
 
 	const inputChangedHandler = (event) => {
-		inputState[1](event.target.value)
+		setTodoName(event.target.value)
 	}
 
 	return <React.Fragment>
@@ -12,7 +12,7 @@ const todo = (props) => {
 			type="text" 
 			placeholder="Todo" 
 			onChange={inputChangedHandler} 
-			value={inputState[0]}/>
+			value={todoName}/>
 		<button type="button">Add</button>
 		<ul/>
 	</React.Fragment>

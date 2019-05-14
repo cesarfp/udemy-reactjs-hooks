@@ -17,7 +17,7 @@ const todo = (props) => {
 				}
 				setTodoList(todos)
 		})
-	})
+	}, [])
 
 	const inputChangedHandler = (event) => {
 		// setTodoState({

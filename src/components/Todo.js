@@ -1,11 +1,26 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useReducer} from 'react'
 import axios from 'axios'
 
 const todo = (props) => {
 	const [todoName,setTodoName]=useState('')
 	const [submittedTodo, setSubmittedTodo] = useState(null)
-	const [todoList,setTodoList]=useState([])
+	//const [todoList,setTodoList]=useState([])
 	// const [todoState, setTodoState] = useState({userInput:'', todoList:[]})
+
+	const todoListReducer = (state, action) => {
+		switch(action.type){
+			case 'ADD':
+				return state.concat(action.payload);
+			case 'SET':
+				return action.payload
+			case 'REMOVE':
+				return state.filter((todo)=>todo.id !== action.payload.id);
+			default:
+				return state;
+		}
+	} 
+
+	const [todoList, dispatch] = useReducer(todoListReducer, [])
 
 	useEffect(()=>{
 		axios.get('https://reactjs-hooks.firebaseio.com/todos.json')
@@ -16,7 +31,7 @@ const todo = (props) => {
 				for(const key in todosData){
 					todos.push({id:key, name:todosData[key].name})
 				}
-				setTodoList(todos)
+				dispatch({type:'SET', payload:todos })
 		})
 
 		return () => {
@@ -38,7 +53,8 @@ const todo = (props) => {
 
 	useEffect(() => {
 		if(submittedTodo){
-			setTodoList(todoList.concat(submittedTodo))
+			dispatch({type:'ADD', payload:submittedTodo})
+			// dispatch(todoList.concat(submittedTodo))
 		}
 	}, [submittedTodo])
 

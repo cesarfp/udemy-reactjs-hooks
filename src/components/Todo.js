@@ -1,9 +1,9 @@
 import React, {useState} from 'react'
 
 const todo = (props) => {
-	// const [todoName,setTodoName]=useState('')
-	// const [todoList,setTodoList]=useState([])
-	const [todoState, setTodoState] = useState({userInput:'', todoList:[]})
+	const [todoName,setTodoName]=useState('')
+	const [todoList,setTodoList]=useState([])
+	// const [todoState, setTodoState] = useState({userInput:'', todoList:[]})
 
 	const inputChangedHandler = (event) => {
 		setTodoState({

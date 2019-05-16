@@ -1,7 +1,10 @@
-import React, { useEffect, useReducer, useRef } from 'react'
+import React, { useState, useEffect, useReducer, useRef, userMemo } from 'react'
 import axios from 'axios'
 
+import List from './List'
+
 const todo = (props) => {
+	const [inputIsValid, setInputIsValid] = useState(false)
 	//const [todoName,setTodoName]=useState('')
 	// const [submittedTodo, setSubmittedTodo] = useState(null)
 	//const [todoList,setTodoList]=useState([])
@@ -42,31 +45,17 @@ const todo = (props) => {
 	}, [])
 
 
-	const mouseMoveHandler = event => {
-		console.log(event.clientX, event.clientY)
-	}
-
-	useEffect(()=>{
-		document.addEventListener('mousemove', mouseMoveHandler )
-		return () => {
-			document.removeEventListener('mousemove', mouseMoveHandler)
-		}
-	}, [])
-
-	// useEffect(() => {
-	// 	if(submittedTodo){
-	// 		dispatch({type:'ADD', payload:submittedTodo})
-	// 		// dispatch(todoList.concat(submittedTodo))
-	// 	}
-	// }, [submittedTodo])
-
-	// const inputChangedHandler = (event) => {
-	// 	// setTodoState({
-	// 	// 	userInput:event.target.value,
-	// 	// 	todoList: todoState.todoList
-	// 	// })
-	// 	setTodoName(event.target.value)
+	// const mouseMoveHandler = event => {
+	// 	console.log(event.clientX, event.clientY)
 	// }
+
+	const inputValidationHandler = event => {
+		if(event.target.value.trim() === ''){
+			setInputIsValid(false)
+		} else {
+			setInputIsValid(true)
+		}
+	}
 
 	const todoAddHandler = () => {
 		// setTodoState({
@@ -102,21 +91,17 @@ const todo = (props) => {
 		<input 
 			type="text" 
 			placeholder="Todo" 
-			// onChange={inputChangedHandler} 
-			// value={todoName}
 			ref={todoInputRef}
+			onChange={inputValidationHandler}
+			style={{backgroundColor:inputIsValid?'transparent':'red'}}
 		/>
 
 		<button 
 			type="button"
-			onClick={todoAddHandler}>Add</button>
-		<ul>
-			{todoList.map(todo=>(
-				<li key={todo.id} onClick={todoRemoveHandler.bind(this,todo.id)}>
-					{todo.name}
-				</li>
-			))}
-		</ul>
+			onClick={todoAddHandler}>Add
+		</button>
+		<List items={todoList} onClick={todoRemoveHandler} />
+		
 	</React.Fragment>
 	
 }

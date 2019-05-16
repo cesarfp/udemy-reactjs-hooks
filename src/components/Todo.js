@@ -100,7 +100,7 @@ const todo = (props) => {
 			type="button"
 			onClick={todoAddHandler}>Add
 		</button>
-		<List items={todoList} onClick={todoRemoveHandler} />
+		{useMemo(()=><List items={todoList} onClick={todoRemoveHandler} />, [todoList])}
 		
 	</React.Fragment>
 	
